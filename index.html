@@ -59,8 +59,8 @@ h2{font-size:22px;margin:0 0 12px}h3{font-size:18px;margin:0 0 8px}label{display
 <script>
 // Isi dua nilai ini dari Supabase > Project Settings > API.
 // Gunakan Project URL dan publishable/anon key saja. Jangan pernah masukkan service_role key.
-const SUPABASE_URL = "PASTE_PROJECT_URL_HERE";
-const SUPABASE_ANON_KEY = "PASTE_PUBLISHABLE_OR_ANON_KEY_HERE";
+const SUPABASE_URL = "https://rtcxecvtempcnhlxkahc.supabase.co/rest/v1/";
+const SUPABASE_ANON_KEY = "https://rtcxecvtempcnhlxkahc.supabase.co/rest/v1/";
 const supabaseConfigured = !SUPABASE_URL.includes("PASTE_") && !SUPABASE_ANON_KEY.includes("PASTE_") && window.supabase;
 const db = supabaseConfigured ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 const questionBank = {
