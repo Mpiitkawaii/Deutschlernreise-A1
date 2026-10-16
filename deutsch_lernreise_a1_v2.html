@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deutsch Lernreise A1</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--ink:#243047;--muted:#65718a;--paper:#fffdf8;--line:#e8e5dc;--blue:#dceaff;--yellow:#ffe8a3;--pink:#ffe0e7;--green:#dff4e5;--purple:#e9e0ff;--accent:#3459a8}
+*{box-sizing:border-box}body{margin:0;background:#f5f4ef;color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
+header{padding:24px 18px 18px;background:var(--paper);border-bottom:1px solid var(--line)}.wrap{max-width:980px;margin:auto}
+.brand{font-size:13px;letter-spacing:.12em;font-weight:800;color:var(--accent);text-transform:uppercase}.hero{display:flex;justify-content:space-between;align-items:center;gap:18px}.hero h1{font-size:clamp(28px,5vw,42px);line-height:1.1;margin:10px 0}.hero p{margin:0;color:var(--muted)}.sticker{font-size:50px;background:var(--yellow);border-radius:24px;padding:16px}
+main{max-width:980px;margin:24px auto;padding:0 16px 40px}.panel{background:white;border:1px solid var(--line);border-radius:20px;padding:22px;margin-bottom:18px;box-shadow:0 5px 18px #24304708}
+h2{font-size:22px;margin:0 0 12px}h3{font-size:18px;margin:0 0 8px}label{display:block;font-weight:700;margin:12px 0 6px}input,select,textarea{font:inherit;padding:12px 13px;border:1px solid #d7dce5;border-radius:11px;width:100%;background:#fff;color:var(--ink)}button{font:inherit;font-weight:750;border:0;border-radius:12px;padding:12px 16px;cursor:pointer;background:var(--accent);color:white}button.secondary{background:#edf1fa;color:var(--ink)}button:disabled{opacity:.4;cursor:not-allowed}.btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.themes{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}.theme{padding:16px;border:1px solid var(--line);border-radius:16px;cursor:pointer;background:#fff;text-align:left;color:var(--ink)}.theme strong{display:block;font-size:17px}.theme span{display:block;font-size:13px;color:var(--muted);margin-top:5px}.theme.active{outline:3px solid var(--accent);background:#f3f6ff}.theme:nth-child(1){background:#f4f7ff}.theme:nth-child(2){background:#fff8df}.theme:nth-child(3){background:#fff0f3}.theme:nth-child(4){background:#effaf1}.theme:nth-child(5){background:#f5efff}
+.hidden{display:none!important}.progressline{height:9px;border-radius:99px;background:#edf0f5;overflow:hidden;margin:12px 0 18px}.progressline div{height:100%;background:#5e9a73;width:0;transition:width .2s}.qmeta{font-size:13px;color:var(--muted);font-weight:700}.question{font-size:22px;font-weight:800;margin:10px 0 16px}.options{display:grid;gap:9px}.option{display:flex;gap:10px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:12px;cursor:pointer}.option input{width:auto}.feedback{margin-top:12px;padding:12px;border-radius:12px}.good{background:var(--green)}.bad{background:var(--pink)}.small{font-size:13px;color:var(--muted)}.statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}.stat{background:#f6f7fb;border-radius:14px;padding:14px}.stat strong{display:block;font-size:25px}.tablewrap{overflow-x:auto}table{border-collapse:collapse;width:100%;min-width:580px}th,td{text-align:left;padding:10px;border-bottom:1px solid var(--line);font-size:14px}th{background:#f7f8fb}.pill{display:inline-block;background:#eef2fb;padding:4px 8px;border-radius:99px;font-size:12px}.footer{color:var(--muted);font-size:12px;text-align:center;padding:12px}
+</style>
+</head>
+<body>
+<header><div class="wrap hero"><div><div class="brand">Deutsch Lernreise · A1</div><h1>Hallo! 👋<br>Bereit zum Üben?</h1><p>Latihan A1: kosakata, Grammatik, Zahlen, Berufe, Orte, dan Hören. Setiap tema berisi 20 soal dengan koreksi langsung.</p></div><div class="sticker" aria-hidden="true">📚</div></div></header>
+<main>
+<section class="panel" id="startPanel">
+<h2>01. Siapa yang sedang belajar?</h2>
+<label for="studentName">Nama peserta</label><input id="studentName" placeholder="Contoh: Ana Putri" maxlength="70">
+<p class="small">Gunakan nama yang sama setiap kali latihan agar hasilmu mudah dikenali tutor. Hasil akan dikirim ke database online.</p>
+<h2 style="margin-top:22px">02. Pilih tema</h2>
+<div class="themes" id="themeGrid">
+<button class="theme active" data-theme="Nomen"><strong>🧩 Nomen</strong><span>20 soal · Artikel, benda, tempat, singular/plural</span></button>
+<button class="theme" data-theme="Verben"><strong>⚡ Verben</strong><span>20 soal · Konjugasi dan kata kerja dasar</span></button>
+<button class="theme" data-theme="Kapitel 1–3"><strong>📖 Kapitel 1–3</strong><span>20 soal · Begrüßungen, W-Fragen, Pronomen, Artikel</span></button>
+<button class="theme" data-theme="Zahlen"><strong>🔢 Zahlen</strong><span>20 soal · Tulis angka sampai ribuan auf Deutsch</span></button>
+<button class="theme" data-theme="Berufe & Hobbys"><strong>🎨 Berufe & Hobbys</strong><span>20 soal · Pekerjaan dan waktu luang</span></button>
+<button class="theme" data-theme="Plätze & Gebäude"><strong>🏙️ Plätze & Gebäude</strong><span>20 soal · Tempat dan bangunan</span></button>
+<button class="theme" data-theme="Hören"><strong>🎧 Hören</strong><span>20 soal · Dengarkan lalu ketik email atau nomor telepon</span></button>
+</div>
+<div class="btnrow"><button id="startBtn">Mulai latihan →</button><button class="secondary" id="dashboardBtn">Dashboard tutor</button></div>
+</section>
+<section class="panel hidden" id="quizPanel">
+<div class="qmeta" id="quizMeta">Nomen · Soal 1 dari 5</div><div class="progressline"><div id="progress"></div></div>
+<div class="question" id="questionText"></div><div id="answerArea"></div><div id="feedback" class="feedback hidden" role="status"></div>
+<div class="btnrow"><button id="checkBtn">Periksa jawaban</button><button class="secondary hidden" id="nextBtn">Soal berikutnya →</button><button class="secondary" id="quitBtn">Keluar</button></div>
+</section>
+<section class="panel hidden" id="resultPanel">
+<h2>🎉 Latihan selesai!</h2><p id="resultMessage"></p><div class="statgrid" id="resultStats"></div><div class="btnrow"><button id="againBtn">Latihan tema ini lagi</button><button class="secondary" id="homeBtn">Kembali ke menu</button><button class="secondary" id="resultDashboardBtn">Lihat dashboard</button></div>
+</section>
+<section class="panel hidden" id="dashboardPanel">
+<h2>📊 Dashboard tutor</h2><p class="small">Login tutor diperlukan untuk melihat hasil dari semua perangkat.</p>
+<div id="tutorLogin">
+<label for="tutorEmail">Email tutor</label><input id="tutorEmail" type="email" autocomplete="username" placeholder="email tutor">
+<label for="tutorPassword">Password</label><input id="tutorPassword" type="password" autocomplete="current-password" placeholder="Password Supabase">
+<div class="btnrow"><button id="loginBtn">Login tutor</button><button class="secondary" id="loginBackBtn">Kembali</button></div><p id="loginMessage" class="small" role="status"></p>
+</div>
+<div id="tutorContent" class="hidden">
+<div class="statgrid" id="dashboardStats"></div><div class="btnrow"><button class="secondary" id="exportBtn">Ekspor hasil CSV</button><button class="secondary" id="logoutBtn">Logout</button><button id="backBtn">Kembali</button></div>
+<div class="tablewrap" style="margin-top:16px"><table><thead><tr><th>Tanggal</th><th>Nama</th><th>Tema</th><th>Benar</th><th>Total</th><th>Nilai</th></tr></thead><tbody id="historyBody"></tbody></table></div>
+</div>
+</section>
+<div class="footer">Deutsch Lernreise A1 · Hasil latihan disimpan online · Audio menggunakan suara browser bila tersedia</div>
+</main>
+<script>
+// Isi dua nilai ini dari Supabase > Project Settings > API.
+// Gunakan Project URL dan publishable/anon key saja. Jangan pernah masukkan service_role key.
+const SUPABASE_URL = "PASTE_PROJECT_URL_HERE";
+const SUPABASE_ANON_KEY = "PASTE_PUBLISHABLE_OR_ANON_KEY_HERE";
+const supabaseConfigured = !SUPABASE_URL.includes("PASTE_") && !SUPABASE_ANON_KEY.includes("PASTE_") && window.supabase;
+const db = supabaseConfigured ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+const questionBank = {
+  "Nomen": [
+    {
+      "type": "mc",
+      "q": "Artikel yang benar untuk kata „Beruf“ adalah …",
+      "options": [
+        "der Beruf",
+        "die Beruf",
+        "das Beruf"
+      ],
+      "a": "der Beruf",
+      "why": "Beruf adalah maskulin: der Beruf."
+    },
+    {
+      "type": "mc",
+      "q": "Pilih artikel yang benar: ___ Gebäude",
+      "options": [
+        "der",
+        "die",
+        "das"
+      ],
+      "a": "das",
+      "why": "Gebäude menggunakan artikel das."
+    },
+    {
+      "type": "text",
+      "q": "Lengkapi: ein Mann, zwei ____ (Männer).",
+      "a": "Männer",
+      "why": "Bentuk plural dari Mann adalah Männer."
+    },
+    {
+      "type": "mc",
+      "q": "„die Stadt“ artinya …",
+      "options": [
+        "kota",
+        "sungai",
+        "pekerjaan"
+      ],
+      "a": "kota",
+      "why": "Stadt berarti kota."
+    },
+    {
+      "type": "text",
+      "q": "Tulis bentuk plural: das Hobby → die ____",
+      "a": "Hobbys",
+      "why": "Plural yang umum: die Hobbys."
+    },
+    {
+      "type": "text",
+      "q": "Tulis plural: das Buch → die ____",
+      "a": "Bücher",
+      "why": "Buch berubah menjadi Bücher."
+    },
+    {
+      "type": "mc",
+      "q": "Artikel yang benar: ___ Frau",
+      "options": [
+        "der",
+        "die",
+        "das"
+      ],
+      "a": "die",
+      "why": "Frau adalah feminin."
+    },
+    {
+      "type": "mc",
+      "q": "Artikel yang benar: ___ Bahnhof",
+      "options": [
+        "der",
+        "die",
+        "das"
+      ],
+      "a": "der",
+      "why": "Bahnhof adalah maskulin."
+    },
+    {
+      "type": "text",
+      "q": "Lengkapi: ein Kind, zwei ____",
+      "a": "Kinder",
+      "why": "Plural Kind adalah Kinder."
+    },
+    {
+      "type": "mc",
+      "q": "„der Fluss“ artinya …",
+      "options": [
+        "sungai",
+        "danau",
+        "gunung"
+      ],
+      "a": "sungai",
+      "why": "Fluss berarti sungai."
+    },
+    {
+      "type": "mc",
+      "q": "Artikel yang benar: ___ Schule",
+      "options": [
+        "der",
+        "die",
+        "das"
+      ],
+      "a": "die",
+      "why": "Schule adalah feminin."
+    },
+    {
+      "type": "text",
+      "q": "Tulis plural: die Adresse → die ____",
+      "a": "Adressen",
+      "why": "Plural Adresse adalah Adressen."
+    },
+    {
+      "type": "mc",
+      "q": "„das Museum“ menggunakan artikel …",
+      "options": [
+        "der",
+        "die",
+        "das"
+      ],
+      "a": "das",
+      "why": "Museum adalah neutrum."
+    },
+    {
+      "type": "mc",
+      "q": "Artikel yang benar: ___ Arzt",
+      "options": [
+        "der",
+        "die",
+        "das"
+      ],
+      "a": "der",
+      "why": "Arzt adalah maskulin."
+    },
+    {
+      "type": "text",
+      "q": "Tulis plural: der Mann → die ____",
+      "a": "Männer",
+      "why": "Mann berubah menjadi Männer."
+    },
+    {
+      "type": "mc",
+      "q": "„die Telefonnummer“ artinya …",
+      "options": [
+        "nomor telepon",
+        "alamat email",
+        "nama keluarga"
+      ],
+      "a": "nomor telepon",
+      "why": "Telefonnummer berarti nomor telepon."
+    },
+    {
+      "type": "mc",
+      "q": "Artikel yang benar: ___ E-Mail-Adresse",
+      "options": [
+        "der",
+        "die",
+        "das"
+      ],
+      "a": "die",
+      "why": "Adresse adalah feminin."
+    },
+    {
+      "type": "text",
+      "q": "Tulis plural: der Beruf → die ____",
+      "a": "Berufe",
+      "why": "Plural Beruf adalah Berufe."
+    },
+    {
+      "type": "mc",
+      "q": "„das Café“ artinya …",
+      "options": [
+        "kafe",
+        "stasiun",
+        "perpustakaan"
+      ],
+      "a": "kafe",
+      "why": "Café berarti kafe."
+    },
+    {
+      "type": "mc",
+      "q": "Artikel yang benar: ___ Hobby",
+      "options": [
+        "der",
+        "die",
+        "das"
+      ],
+      "a": "das",
+      "why": "Hobby menggunakan artikel das."
+    }
+  ],
+  "Verben": [
+    {
+      "type": "mc",
+      "q": "Ich ___ aus Indonesien.",
+      "options": [
+        "komme",
+        "kommst",
+        "kommt"
+      ],
+      "a": "komme",
+      "why": "Dengan ich, bentuknya komme."
+    },
+    {
+      "type": "mc",
+      "q": "Du ___ in Bandung.",
+      "options": [
+        "wohne",
+        "wohnst",
+        "wohnt"
+      ],
+      "a": "wohnst",
+      "why": "Dengan du: wohnst."
+    },
+    {
+      "type": "text",
+      "q": "Er ____ Deutsch. (lernen)",
+      "a": "lernt",
+      "why": "Er/sie/es + lernt."
+    },
+    {
+      "type": "mc",
+      "q": "Wir ___ gern Musik.",
+      "options": [
+        "höre",
+        "hören",
+        "hörst"
+      ],
+      "a": "hören",
+      "why": "Dengan wir, bentuk infinitif berakhiran -en: hören."
+    },
+    {
+      "type": "text",
+      "q": "Sie (formal) ____ Sie Deutsch? (sprechen)",
+      "a": "sprechen",
+      "why": "Bentuk formal Sie: sprechen."
+    },
+    {
+      "type": "mc",
+      "q": "Sie (dia perempuan) ___ in Berlin.",
+      "options": [
+        "wohne",
+        "wohnst",
+        "wohnt"
+      ],
+      "a": "wohnt",
+      "why": "Dengan sie tunggal: wohnt."
+    },
+    {
+      "type": "text",
+      "q": "Ich ____ gern Bücher. (lesen)",
+      "a": "lese",
+      "why": "Ich lese."
+    },
+    {
+      "type": "mc",
+      "q": "Ihr ___ Fußball.",
+      "options": [
+        "spielt",
+        "spielen",
+        "spielst"
+      ],
+      "a": "spielt",
+      "why": "Dengan ihr: spielt."
+    },
+    {
+      "type": "text",
+      "q": "Wir ____ in Deutschland. (leben)",
+      "a": "leben",
+      "why": "Dengan wir: leben."
+    },
+    {
+      "type": "mc",
+      "q": "Er ___ aus Jakarta.",
+      "options": [
+        "komme",
+        "kommt",
+        "kommen"
+      ],
+      "a": "kommt",
+      "why": "Dengan er: kommt."
+    },
+    {
+      "type": "text",
+      "q": "Du ____ gern. (kochen)",
+      "a": "kochst",
+      "why": "Dengan du: kochst."
+    },
+    {
+      "type": "mc",
+      "q": "Ich ___ Studentin.",
+      "options": [
+        "bin",
+        "bist",
+        "ist"
+      ],
+      "a": "bin",
+      "why": "sein dengan ich adalah bin."
+    },
+    {
+      "type": "text",
+      "q": "Du ____ 20 Jahre alt. (sein)",
+      "a": "bist",
+      "why": "sein dengan du adalah bist."
+    },
+    {
+      "type": "mc",
+      "q": "Wir ___ müde.",
+      "options": [
+        "seid",
+        "sind",
+        "ist"
+      ],
+      "a": "sind",
+      "why": "sein dengan wir adalah sind."
+    },
+    {
+      "type": "text",
+      "q": "Maria ____ in einer Schule. (arbeiten)",
+      "a": "arbeitet",
+      "why": "Maria arbeitet."
+    },
+    {
+      "type": "mc",
+      "q": "Was ___ du gern?",
+      "options": [
+        "machst",
+        "macht",
+        "machen"
+      ],
+      "a": "machst",
+      "why": "Was machst du gern?"
+    },
+    {
+      "type": "text",
+      "q": "Ich ____ gern Musik. (hören)",
+      "a": "höre",
+      "why": "Ich höre."
+    },
+    {
+      "type": "mc",
+      "q": "Sie (formal) ___ aus Indonesien.",
+      "options": [
+        "kommen",
+        "kommst",
+        "kommt"
+      ],
+      "a": "kommen",
+      "why": "Formal Sie memakai kommen."
+    },
+    {
+      "type": "text",
+      "q": "Er ____ in Bandung. (wohnen)",
+      "a": "wohnt",
+      "why": "Er wohnt."
+    },
+    {
+      "type": "mc",
+      "q": "Ihr ___ Deutsch.",
+      "options": [
+        "lernt",
+        "lernen",
+        "lerne"
+      ],
+      "a": "lernt",
+      "why": "Dengan ihr: lernt."
+    }
+  ],
+  "Kapitel 1–3": [
+    {
+      "type": "mc",
+      "q": "Mana salam yang cocok dalam situasi formal pada pagi hari?",
+      "options": [
+        "Guten Morgen",
+        "Hi!",
+        "Tschüss!"
+      ],
+      "a": "Guten Morgen",
+      "why": "Guten Morgen cocok untuk salam formal pada pagi hari."
+    },
+    {
+      "type": "mc",
+      "q": "„Wie heißen Sie?“ adalah …",
+      "options": [
+        "W-Frage",
+        "Ja/Nein-Frage",
+        "Aussagesatz"
+      ],
+      "a": "W-Frage",
+      "why": "Wie adalah kata tanya W."
+    },
+    {
+      "type": "text",
+      "q": "Lengkapi: Ich bin Ana. ____ kommst du? (asal)",
+      "a": "Woher",
+      "why": "Woher kommst du? = Kamu berasal dari mana?"
+    },
+    {
+      "type": "mc",
+      "q": "Kata ganti untuk „Maria und ich“ adalah …",
+      "options": [
+        "wir",
+        "ihr",
+        "sie"
+      ],
+      "a": "wir",
+      "why": "Maria und ich = wir."
+    },
+    {
+      "type": "mc",
+      "q": "Pilih artikel tak tentu: Das ist ___ Tisch.",
+      "options": [
+        "ein",
+        "eine",
+        "einen"
+      ],
+      "a": "ein",
+      "why": "Tisch maskulin; nominatif: ein Tisch."
+    },
+    {
+      "type": "mc",
+      "q": "Pilih artikel tentu: ___ Frau ist Lehrerin.",
+      "options": [
+        "Der",
+        "Die",
+        "Das"
+      ],
+      "a": "Die",
+      "why": "Frau feminin: die Frau."
+    },
+    {
+      "type": "text",
+      "q": "Dalam iklan singkat: „Deutsch lernen? Komm ____!“ (informal, datanglah)",
+      "a": "vorbei",
+      "why": "Komm vorbei! adalah ungkapan ajakan yang wajar."
+    },
+    {
+      "type": "mc",
+      "q": "Untuk menyapa teman, yang paling sesuai adalah …",
+      "options": [
+        "Hallo, wie geht's?",
+        "Guten Tag, Herr Müller.",
+        "Auf Wiedersehen, Frau Weber."
+      ],
+      "a": "Hallo, wie geht's?",
+      "why": "Hallo cocok untuk suasana informal."
+    },
+    {
+      "type": "mc",
+      "q": "„Wie alt bist du?“ menanyakan …",
+      "options": [
+        "umur",
+        "asal",
+        "pekerjaan"
+      ],
+      "a": "umur",
+      "why": "Wie alt = berapa umur."
+    },
+    {
+      "type": "text",
+      "q": "Lengkapi: Ich ____ Fitri. (nama)",
+      "a": "heiße",
+      "why": "Ich heiße Fitri."
+    },
+    {
+      "type": "mc",
+      "q": "„Wo wohnen Sie?“ menanyakan …",
+      "options": [
+        "tempat tinggal",
+        "nama",
+        "hobi"
+      ],
+      "a": "tempat tinggal",
+      "why": "Wo wohnen Sie? menanyakan tempat tinggal."
+    },
+    {
+      "type": "mc",
+      "q": "Pronomen untuk „Herr Müller“ adalah …",
+      "options": [
+        "er",
+        "sie",
+        "es"
+      ],
+      "a": "er",
+      "why": "Herr Müller = er."
+    },
+    {
+      "type": "mc",
+      "q": "Pronomen untuk „Anna und Lea“ adalah …",
+      "options": [
+        "sie",
+        "wir",
+        "ihr"
+      ],
+      "a": "sie",
+      "why": "Anna und Lea = sie."
+    },
+    {
+      "type": "mc",
+      "q": "Pilih artikel tak tentu: Das ist ___ Lampe.",
+      "options": [
+        "ein",
+        "eine",
+        "einen"
+      ],
+      "a": "eine",
+      "why": "Lampe feminin: eine Lampe."
+    },
+    {
+      "type": "mc",
+      "q": "Pilih artikel tentu: ___ Kind spielt.",
+      "options": [
+        "Der",
+        "Die",
+        "Das"
+      ],
+      "a": "Das",
+      "why": "Kind menggunakan artikel das."
+    },
+    {
+      "type": "mc",
+      "q": "Angka 13 dalam bahasa Jerman adalah …",
+      "options": [
+        "dreizehn",
+        "dreißig",
+        "drei"
+      ],
+      "a": "dreizehn",
+      "why": "13 = dreizehn."
+    },
+    {
+      "type": "mc",
+      "q": "„Was sind Sie von Beruf?“ menanyakan …",
+      "options": [
+        "pekerjaan",
+        "alamat",
+        "nomor telepon"
+      ],
+      "a": "pekerjaan",
+      "why": "Frasa ini menanyakan profesi."
+    },
+    {
+      "type": "text",
+      "q": "Ajakan informal: „Komm ____!“ (mampirlah)",
+      "a": "vorbei",
+      "why": "Komm vorbei! berarti mampirlah."
+    },
+    {
+      "type": "mc",
+      "q": "Mana penutup formal yang berarti sampai jumpa?",
+      "options": [
+        "Auf Wiedersehen",
+        "Guten Morgen",
+        "Bitte"
+      ],
+      "a": "Auf Wiedersehen",
+      "why": "Auf Wiedersehen adalah salam perpisahan formal."
+    },
+    {
+      "type": "mc",
+      "q": "„Wie ist Ihre Telefonnummer?“ menanyakan …",
+      "options": [
+        "nomor telepon",
+        "nama depan",
+        "kota asal"
+      ],
+      "a": "nomor telepon",
+      "why": "Telefonnummer = nomor telepon."
+    }
+  ],
+  "Zahlen": [
+    {
+      "type": "text",
+      "q": "Tulis 7 auf Deutsch.",
+      "a": "sieben",
+      "why": "7 = sieben."
+    },
+    {
+      "type": "text",
+      "q": "Tulis 16 auf Deutsch.",
+      "a": "sechzehn",
+      "why": "16 = sechzehn (bukan sechszehn)."
+    },
+    {
+      "type": "text",
+      "q": "Tulis 24 auf Deutsch.",
+      "a": "vierundzwanzig",
+      "why": "Satuan disebut sebelum puluhan: vier-und-zwanzig."
+    },
+    {
+      "type": "text",
+      "q": "Tulis 105 auf Deutsch.",
+      "a": "einhundertfünf",
+      "why": "105 = einhundertfünf (juga: hundertfünf)."
+    },
+    {
+      "type": "text",
+      "q": "Tulis 248 auf Deutsch.",
+      "a": "zweihundertachtundvierzig",
+      "why": "248 = zweihundertachtundvierzig."
+    },
+    {
+      "type": "text",
+      "q": "Tulis 1.000 auf Deutsch.",
+      "a": "eintausend",
+      "why": "1.000 = eintausend atau tausend."
+    },
+    {
+      "type": "text",
+      "q": "Tulis 12 auf Deutsch.",
+      "a": "zwölf",
+      "why": "12 = zwölf."
+    },
+    {
+      "type": "text",
+      "q": "Tulis 19 auf Deutsch.",
+      "a": "neunzehn",
+      "why": "19 = neunzehn."
+    },
+    {
+      "type": "text",
+      "q": "Tulis 30 auf Deutsch.",
+      "a": "dreißig",
+      "why": "30 = dreißig."
+    },
+    {
+      "type": "text",
+      "q": "Tulis 41 auf Deutsch.",
+      "a": "einundvierzig",
+      "why": "41 = einundvierzig."
+    },
+    {
+      "type": "text",
+      "q": "Tulis 56 auf Deutsch.",
+      "a": "sechsundfünfzig",
+      "why": "56 = sechsundfünfzig."
+    },
+    {
+      "type": "text",
+      "q": "Tulis 72 auf Deutsch.",
+      "a": "zweiundsiebzig",
+      "why": "72 = zweiundsiebzig."
+    },
+    {
+      "type": "text",
+      "q": "Tulis 88 auf Deutsch.",
+      "a": "achtundachtzig",
+      "why": "88 = achtundachtzig."
+    },
+    {
+      "type": "text",
+      "q": "Tulis 100 auf Deutsch.",
+      "a": "einhundert",
+      "why": "100 = einhundert.",
+      "accepted": [
+        "einhundert",
+        "hundert"
+      ]
+    },
+    {
+      "type": "text",
+      "q": "Tulis 315 auf Deutsch.",
+      "a": "dreihundertfünfzehn",
+      "why": "315 = dreihundertfünfzehn."
+    },
+    {
+      "type": "text",
+      "q": "Tulis 420 auf Deutsch.",
+      "a": "vierhundertzwanzig",
+      "why": "420 = vierhundertzwanzig."
+    },
+    {
+      "type": "text",
+      "q": "Tulis 999 auf Deutsch.",
+      "a": "neunhundertneunundneunzig",
+      "why": "999 = neunhundertneunundneunzig."
+    },
+    {
+      "type": "text",
+      "q": "Tulis 1.250 auf Deutsch.",
+      "a": "eintausendzweihundertfünfzig",
+      "why": "1.250 = eintausendzweihundertfünfzig.",
+      "accepted": [
+        "eintausendzweihundertfünfzig",
+        "tausendzweihundertfünfzig"
+      ]
+    },
+    {
+      "type": "text",
+      "q": "Tulis 2.006 auf Deutsch.",
+      "a": "zweitausendsechs",
+      "why": "2.006 = zweitausendsechs."
+    },
+    {
+      "type": "text",
+      "q": "Tulis 3.481 auf Deutsch.",
+      "a": "dreitausendvierhunderteinundachtzig",
+      "why": "3.481 = dreitausendvierhunderteinundachtzig."
+    }
+  ],
+  "Berufe & Hobbys": [
+    {
+      "type": "mc",
+      "q": "„Lehrerin“ adalah pekerjaan …",
+      "options": [
+        "guru perempuan",
+        "dokter",
+        "arsitek"
+      ],
+      "a": "guru perempuan",
+      "why": "Lehrerin berarti guru perempuan."
+    },
+    {
+      "type": "text",
+      "q": "Lengkapi: Ich spiele gern ____ (sepak bola).",
+      "a": "Fußball",
+      "why": "Ich spiele gern Fußball."
+    },
+    {
+      "type": "mc",
+      "q": "„der Arzt“ artinya …",
+      "options": [
+        "dokter laki-laki",
+        "pelajar",
+        "insinyur"
+      ],
+      "a": "dokter laki-laki",
+      "why": "Arzt = dokter laki-laki; Ärztin = dokter perempuan."
+    },
+    {
+      "type": "mc",
+      "q": "„lesen“ sebagai hobi berarti …",
+      "options": [
+        "membaca",
+        "berenang",
+        "memasak"
+      ],
+      "a": "membaca",
+      "why": "lesen berarti membaca."
+    },
+    {
+      "type": "text",
+      "q": "Tulis bahasa Jerman untuk „mahasiswa/mahasiswi“ (umum).",
+      "a": "Student/Studentin",
+      "accepted": [
+        "Student",
+        "Studentin",
+        "Studentin/Student"
+      ],
+      "why": "Student (laki-laki) / Studentin (perempuan)."
+    },
+    {
+      "type": "mc",
+      "q": "„Ingenieur“ bedeutet …",
+      "options": [
+        "insinyur",
+        "guru",
+        "perawat"
+      ],
+      "a": "insinyur",
+      "why": "Ingenieur berarti insinyur."
+    },
+    {
+      "type": "mc",
+      "q": "„Ich schwimme gern“ berarti …",
+      "options": [
+        "Saya suka berenang",
+        "Saya suka membaca",
+        "Saya suka memasak"
+      ],
+      "a": "Saya suka berenang",
+      "why": "schwimmen = berenang."
+    },
+    {
+      "type": "text",
+      "q": "Lengkapi: Ich ____ gern Musik. (hören)",
+      "a": "höre",
+      "why": "Ich höre gern Musik."
+    },
+    {
+      "type": "mc",
+      "q": "„Koch“ adalah …",
+      "options": [
+        "juru masak laki-laki",
+        "dokter",
+        "sopir"
+      ],
+      "a": "juru masak laki-laki",
+      "why": "Koch = juru masak laki-laki."
+    },
+    {
+      "type": "mc",
+      "q": "„tanzen“ berarti …",
+      "options": [
+        "menari",
+        "menulis",
+        "tidur"
+      ],
+      "a": "menari",
+      "why": "tanzen berarti menari."
+    },
+    {
+      "type": "text",
+      "q": "Tulis bahasa Jerman untuk dokter perempuan.",
+      "a": "Ärztin",
+      "why": "Ärztin berarti dokter perempuan."
+    },
+    {
+      "type": "mc",
+      "q": "„Ich spiele Gitarre“ adalah hobi …",
+      "options": [
+        "bermain gitar",
+        "bermain sepak bola",
+        "berenang"
+      ],
+      "a": "bermain gitar",
+      "why": "Gitarre spielen = bermain gitar."
+    },
+    {
+      "type": "mc",
+      "q": "„Student“ berarti …",
+      "options": [
+        "mahasiswa laki-laki",
+        "guru perempuan",
+        "dokter perempuan"
+      ],
+      "a": "mahasiswa laki-laki",
+      "why": "Student = mahasiswa laki-laki."
+    },
+    {
+      "type": "text",
+      "q": "Lengkapi: Er ____ gern Bücher. (lesen)",
+      "a": "liest",
+      "why": "lesen berubah menjadi liest untuk er."
+    },
+    {
+      "type": "mc",
+      "q": "„Fotografieren“ berarti …",
+      "options": [
+        "memotret",
+        "memasak",
+        "bersepeda"
+      ],
+      "a": "memotret",
+      "why": "fotografieren berarti memotret."
+    },
+    {
+      "type": "mc",
+      "q": "„Krankenschwester“ adalah …",
+      "options": [
+        "perawat perempuan",
+        "arsitek",
+        "mahasiswa"
+      ],
+      "a": "perawat perempuan",
+      "why": "Krankenschwester berarti perawat perempuan."
+    },
+    {
+      "type": "text",
+      "q": "Tulis bahasa Jerman untuk memasak.",
+      "a": "kochen",
+      "why": "kochen berarti memasak."
+    },
+    {
+      "type": "mc",
+      "q": "„Ich fahre gern Fahrrad“ berarti …",
+      "options": [
+        "Saya suka bersepeda",
+        "Saya suka menari",
+        "Saya suka menyanyi"
+      ],
+      "a": "Saya suka bersepeda",
+      "why": "Fahrrad fahren = bersepeda."
+    },
+    {
+      "type": "mc",
+      "q": "„Verkäuferin“ berarti …",
+      "options": [
+        "pramuniaga perempuan",
+        "insinyur",
+        "dokter laki-laki"
+      ],
+      "a": "pramuniaga perempuan",
+      "why": "Verkäuferin adalah penjual perempuan."
+    },
+    {
+      "type": "text",
+      "q": "Lengkapi: Wir ____ gern Fußball. (spielen)",
+      "a": "spielen",
+      "why": "Dengan wir: spielen."
+    }
+  ],
+  "Plätze & Gebäude": [
+    {
+      "type": "mc",
+      "q": "Di Jerman, „der Bahnhof“ adalah …",
+      "options": [
+        "stasiun kereta",
+        "rumah sakit",
+        "balai kota"
+      ],
+      "a": "stasiun kereta",
+      "why": "Bahnhof = stasiun kereta."
+    },
+    {
+      "type": "mc",
+      "q": "„die Schule“ berarti …",
+      "options": [
+        "sekolah",
+        "pasar",
+        "jembatan"
+      ],
+      "a": "sekolah",
+      "why": "Schule = sekolah."
+    },
+    {
+      "type": "mc",
+      "q": "Bangunan yang biasa disebut „masjid“ dalam bahasa Jerman adalah …",
+      "options": [
+        "die Moschee",
+        "die Kirche",
+        "das Museum"
+      ],
+      "a": "die Moschee",
+      "why": "Moschee = masjid."
+    },
+    {
+      "type": "text",
+      "q": "Tulis bahasa Jerman untuk „rumah sakit“.",
+      "a": "das Krankenhaus",
+      "accepted": [
+        "Krankenhaus",
+        "das Krankenhaus"
+      ],
+      "why": "Rumah sakit = das Krankenhaus."
+    },
+    {
+      "type": "mc",
+      "q": "„der Markt“ adalah …",
+      "options": [
+        "pasar",
+        "sungai",
+        "perpustakaan"
+      ],
+      "a": "pasar",
+      "why": "Markt = pasar."
+    },
+    {
+      "type": "mc",
+      "q": "„die Bibliothek“ berarti …",
+      "options": [
+        "perpustakaan",
+        "bandara",
+        "kantor pos"
+      ],
+      "a": "perpustakaan",
+      "why": "Bibliothek = perpustakaan."
+    },
+    {
+      "type": "mc",
+      "q": "„das Rathaus“ adalah …",
+      "options": [
+        "balai kota",
+        "stasiun",
+        "hotel"
+      ],
+      "a": "balai kota",
+      "why": "Rathaus = balai kota."
+    },
+    {
+      "type": "text",
+      "q": "Tulis bahasa Jerman untuk gereja.",
+      "a": "die Kirche",
+      "why": "Kirche = gereja.",
+      "accepted": [
+        "Kirche",
+        "die Kirche"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "„der Flughafen“ adalah …",
+      "options": [
+        "bandara",
+        "pasar",
+        "sekolah"
+      ],
+      "a": "bandara",
+      "why": "Flughafen = bandara."
+    },
+    {
+      "type": "mc",
+      "q": "„das Restaurant“ berarti …",
+      "options": [
+        "restoran",
+        "museum",
+        "rumah sakit"
+      ],
+      "a": "restoran",
+      "why": "Restaurant berarti restoran."
+    },
+    {
+      "type": "text",
+      "q": "Tulis bahasa Jerman untuk hotel.",
+      "a": "das Hotel",
+      "why": "Hotel = hotel.",
+      "accepted": [
+        "Hotel",
+        "das Hotel"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "„der Park“ adalah …",
+      "options": [
+        "taman",
+        "kantor",
+        "jembatan"
+      ],
+      "a": "taman",
+      "why": "Park berarti taman."
+    },
+    {
+      "type": "mc",
+      "q": "„die Post“ adalah …",
+      "options": [
+        "kantor pos",
+        "stasiun",
+        "perpustakaan"
+      ],
+      "a": "kantor pos",
+      "why": "Post dapat berarti kantor pos."
+    },
+    {
+      "type": "text",
+      "q": "Tulis bahasa Jerman untuk jembatan.",
+      "a": "die Brücke",
+      "why": "Brücke = jembatan.",
+      "accepted": [
+        "Brücke",
+        "die Brücke"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "„der See“ berarti …",
+      "options": [
+        "danau",
+        "sungai",
+        "gunung"
+      ],
+      "a": "danau",
+      "why": "See dapat berarti danau."
+    },
+    {
+      "type": "mc",
+      "q": "„das Schwimmbad“ adalah …",
+      "options": [
+        "kolam renang umum",
+        "bandara",
+        "pasar"
+      ],
+      "a": "kolam renang umum",
+      "why": "Schwimmbad = kolam renang."
+    },
+    {
+      "type": "text",
+      "q": "Tulis bahasa Jerman untuk stasiun kereta.",
+      "a": "der Bahnhof",
+      "why": "Bahnhof = stasiun kereta.",
+      "accepted": [
+        "Bahnhof",
+        "der Bahnhof"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Tempat untuk membeli obat adalah …",
+      "options": [
+        "die Apotheke",
+        "die Schule",
+        "der Park"
+      ],
+      "a": "die Apotheke",
+      "why": "Apotheke = apotek."
+    },
+    {
+      "type": "mc",
+      "q": "„das Museum“ berarti …",
+      "options": [
+        "museum",
+        "masjid",
+        "rumah sakit"
+      ],
+      "a": "museum",
+      "why": "Museum berarti museum."
+    },
+    {
+      "type": "text",
+      "q": "Tulis bahasa Jerman untuk jalan.",
+      "a": "die Straße",
+      "why": "Straße = jalan.",
+      "accepted": [
+        "Straße",
+        "die Straße"
+      ]
+    }
+  ],
+  "Hören": [
+    {
+      "type": "listen",
+      "q": "Dengarkan alamat email berikut, lalu ketik dengan format email.",
+      "spoken": "anna punkt meier at beispiel punkt de",
+      "a": "anna.meier@beispiel.de",
+      "accepted": [
+        "anna.meier@beispiel.de",
+        "anna punkt meier at beispiel punkt de"
+      ],
+      "why": "„Punkt“ menjadi titik (.) dan „at“ menjadi @. Untuk latihan ini, audio dibacakan sebagai kata."
+    },
+    {
+      "type": "listen",
+      "q": "Dengarkan nomor telepon berikut, lalu ketik angkanya.",
+      "spoken": "null eins sieben sechs, drei vier zwei, acht neun null",
+      "a": "0176 342 890",
+      "accepted": [
+        "0176 342 890",
+        "0176342890",
+        "0176-342-890"
+      ],
+      "why": "Nomor telepon ditulis dengan digit: 0176 342 890."
+    },
+    {
+      "type": "listen",
+      "q": "Dengarkan alamat email berikut, lalu ketik dengan format email.",
+      "spoken": "tom unterstrich schmidt at mail punkt de",
+      "a": "tom_schmidt@mail.de",
+      "accepted": [
+        "tom_schmidt@mail.de",
+        "tom unterstrich schmidt at mail punkt de"
+      ],
+      "why": "„Unterstrich“ menjadi garis bawah (_)."
+    },
+    {
+      "type": "listen",
+      "q": "Dengarkan nomor telepon, lalu ketik digitnya.",
+      "spoken": "null eins sieben eins, fünf null sechs, drei zwei eins",
+      "a": "0171 506 321",
+      "why": "Tulis nomor telepon sebagai digit.",
+      "accepted": [
+        "0171 506 321",
+        "0171506321",
+        "0171-506-321"
+      ]
+    },
+    {
+      "type": "listen",
+      "q": "Dengarkan alamat email, lalu ketik.",
+      "spoken": "lisa punkt mueller at web punkt de",
+      "a": "lisa.mueller@web.de",
+      "why": "Punkt menjadi titik dan at menjadi @.",
+      "accepted": [
+        "lisa.mueller@web.de",
+        "lisa-mueller@web.de"
+      ]
+    },
+    {
+      "type": "listen",
+      "q": "Dengarkan nomor telepon, lalu ketik digitnya.",
+      "spoken": "null eins fünf eins, sieben acht drei, neun vier null",
+      "a": "0151 783 940",
+      "why": "Dengarkan kelompok angka.",
+      "accepted": [
+        "0151 783 940",
+        "0151783940",
+        "0151-783-940"
+      ]
+    },
+    {
+      "type": "listen",
+      "q": "Dengarkan nama kota, lalu ketik.",
+      "spoken": "München",
+      "a": "München",
+      "why": "Perhatikan umlaut ü."
+    },
+    {
+      "type": "listen",
+      "q": "Dengarkan alamat email, lalu ketik.",
+      "spoken": "max punkt fischer at beispiel punkt de",
+      "a": "max.fischer@beispiel.de",
+      "why": "Punkt menjadi titik dan at menjadi @."
+    },
+    {
+      "type": "listen",
+      "q": "Dengarkan nomor telepon, lalu ketik digitnya.",
+      "spoken": "null eins sieben sieben, zwei drei vier, fünf sechs acht",
+      "a": "0177 234 568",
+      "why": "Tulis nomor telepon dalam angka.",
+      "accepted": [
+        "0177 234 568",
+        "0177234568",
+        "0177-234-568"
+      ]
+    },
+    {
+      "type": "listen",
+      "q": "Dengarkan nama kota, lalu ketik.",
+      "spoken": "Frankfurt",
+      "a": "Frankfurt",
+      "why": "Tulis nama kota sesuai audio."
+    },
+    {
+      "type": "listen",
+      "q": "Dengarkan alamat email, lalu ketik.",
+      "spoken": "sara minus klein at mail punkt de",
+      "a": "sara-klein@mail.de",
+      "why": "Minus berarti tanda hubung.",
+      "accepted": [
+        "sara-klein@mail.de"
+      ]
+    },
+    {
+      "type": "listen",
+      "q": "Dengarkan nomor telepon, lalu ketik digitnya.",
+      "spoken": "null eins sechs null, vier fünf acht, sieben zwei eins",
+      "a": "0160 458 721",
+      "why": "Tulis angka sesuai urutan audio.",
+      "accepted": [
+        "0160 458 721",
+        "0160458721",
+        "0160-458-721"
+      ]
+    },
+    {
+      "type": "listen",
+      "q": "Dengarkan nama keluarga, lalu ketik.",
+      "spoken": "Schneider",
+      "a": "Schneider",
+      "why": "Tulis nama keluarga sesuai audio."
+    },
+    {
+      "type": "listen",
+      "q": "Dengarkan alamat email, lalu ketik.",
+      "spoken": "paul punkt weber at beispiel punkt de",
+      "a": "paul.weber@beispiel.de",
+      "why": "Punkt menjadi titik dan at menjadi @."
+    },
+    {
+      "type": "listen",
+      "q": "Dengarkan nomor telepon, lalu ketik digitnya.",
+      "spoken": "null eins sieben drei, neun eins zwei, vier null sechs",
+      "a": "0173 912 406",
+      "why": "Nomor telepon ditulis dengan digit.",
+      "accepted": [
+        "0173 912 406",
+        "0173912406",
+        "0173-912-406"
+      ]
+    },
+    {
+      "type": "listen",
+      "q": "Dengarkan nama kota, lalu ketik.",
+      "spoken": "Hamburg",
+      "a": "Hamburg",
+      "why": "Tulis nama kota sesuai audio."
+    },
+    {
+      "type": "listen",
+      "q": "Dengarkan alamat email, lalu ketik.",
+      "spoken": "nina punkt lang at web punkt de",
+      "a": "nina.lang@web.de",
+      "why": "Punkt menjadi titik dan at menjadi @."
+    },
+    {
+      "type": "listen",
+      "q": "Dengarkan nomor telepon, lalu ketik digitnya.",
+      "spoken": "null eins fünf zwei, sechs acht drei, eins sieben null",
+      "a": "0152 683 170",
+      "why": "Dengarkan dan catat semua digit.",
+      "accepted": [
+        "0152 683 170",
+        "0152683170",
+        "0152-683-170"
+      ]
+    },
+    {
+      "type": "listen",
+      "q": "Dengarkan nama depan, lalu ketik.",
+      "spoken": "Michael",
+      "a": "Michael",
+      "why": "Tulis nama sesuai yang didengar."
+    },
+    {
+      "type": "listen",
+      "q": "Dengarkan alamat email, lalu ketik.",
+      "spoken": "anna punkt schmidt at mail punkt de",
+      "a": "anna.schmidt@mail.de",
+      "why": "Punkt menjadi titik dan at menjadi @."
+    }
+  ]
+};
+const $=id=>document.getElementById(id);
+let selectedTheme="Nomen", questions=[], index=0, correct=0, checked=false, student="", answers=[];
+document.querySelectorAll(".theme").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".theme").forEach(x=>x.classList.remove("active"));b.classList.add("active");selectedTheme=b.dataset.theme;}));
+function show(id){["startPanel","quizPanel","resultPanel","dashboardPanel"].forEach(x=>$(x).classList.toggle("hidden",x!==id))}
+function normalize(s){return String(s||"").trim().toLocaleLowerCase("de-DE").replace(/[’']/g,"'").replace(/\s+/g," ")}
+$("startBtn").onclick=()=>{student=$("studentName").value.trim();if(!student){alert("Isi nama peserta dulu ya.");$("studentName").focus();return;}questions=[...questionBank[selectedTheme]];index=0;correct=0;checked=false;answers=[];show("quizPanel");renderQuestion()};
+function renderQuestion(){checked=false;let q=questions[index];$("quizMeta").textContent=`${selectedTheme} · Soal ${index+1} dari ${questions.length}`;$("progress").style.width=(index/questions.length*100)+"%";$("questionText").textContent=q.q;$("feedback").className="feedback hidden";$("feedback").textContent="";$("nextBtn").classList.add("hidden");$("checkBtn").classList.remove("hidden");let area=$("answerArea");area.innerHTML="";
+if(q.type==="mc"){let wrap=document.createElement("div");wrap.className="options";q.options.forEach((op,i)=>{let label=document.createElement("label");label.className="option";let radio=document.createElement("input");radio.type="radio";radio.name="answer";radio.value=op;label.append(radio,document.createTextNode(op));wrap.append(label)});area.append(wrap)}
+else if(q.type==="listen"){let box=document.createElement("div");box.innerHTML='<button type="button" class="secondary" id="playAudio">▶ Putar audio</button><p class="small">Dengarkan baik-baik. Audio dibacakan dengan suara bahasa Jerman yang tersedia di browser. Kamu boleh memutar ulang sebelum memeriksa jawaban.</p><label for="answerInput">Ketik jawabanmu</label><input id="answerInput" autocomplete="off" placeholder="Ketik email atau nomor telepon">';area.append(box);$("playAudio").onclick=()=>{if(!("speechSynthesis"in window)){alert("Browser ini belum mendukung audio otomatis. Coba Chrome/Edge terbaru.");return;}speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(q.spoken);u.lang="de-DE";u.rate=.78;speechSynthesis.speak(u)}}
+else{let box=document.createElement("div");box.innerHTML='<label for="answerInput">Jawabanmu</label><input id="answerInput" autocomplete="off" placeholder="Ketik jawaban auf Deutsch">';area.append(box);$("answerInput").focus()}
+}
+function getAnswer(){let q=questions[index];if(q.type==="mc")return document.querySelector('input[name="answer"]:checked')?.value||"";return $("answerInput")?.value||""}
+$("checkBtn").onclick=()=>{if(checked)return;let q=questions[index],ans=getAnswer();if(!ans.trim()){alert("Pilih atau ketik jawaban dulu.");return}let accepted=[q.a,...(q.accepted||[])].map(normalize);let ok=accepted.includes(normalize(ans));checked=true;if(ok)correct++;answers.push({question:q.q,given:ans,correct:ok,expected:q.a});let f=$("feedback");f.classList.remove("hidden","good","bad");f.classList.add(ok?"good":"bad");f.innerHTML=`<strong>${ok?"Richtig! Jawaban benar 🎉":"Belum tepat, coba pelajari lagi."}</strong><br>${q.why}<br><span class="small">Jawaban acuan: ${q.a}</span>`;$("checkBtn").classList.add("hidden");$("nextBtn").classList.remove("hidden");$("nextBtn").textContent=index===questions.length-1?"Lihat hasil →":"Soal berikutnya →";};
+$("nextBtn").onclick=()=>{if(index<questions.length-1){index++;renderQuestion()}else finish()};
+function getHistory(){try{return JSON.parse(localStorage.getItem("deutschLernreiseHistory")||"[]")}catch{return []}}
+async function finish(){
+ let pct=Math.round(correct/questions.length*100);
+ let record={student_name:student,theme:selectedTheme,correct,total:questions.length,score:pct,answers,created_at:new Date().toISOString()};
+ $("resultMessage").textContent=`Gut gemacht, ${student}! Kamu menyelesaikan tema ${selectedTheme}.`;
+ $("resultStats").innerHTML=`<div class="stat"><span class="small">Nilai</span><strong>${pct}%</strong></div><div class="stat"><span class="small">Jawaban benar</span><strong>${correct}/${questions.length}</strong></div><div class="stat"><span class="small">Tema</span><strong style="font-size:17px">${selectedTheme}</strong></div>`;
+ show("resultPanel");
+ if(!db){$("resultMessage").textContent += " Catatan: Supabase belum dikonfigurasi, jadi nilai belum terkirim online. Ikuti petunjuk setup terlebih dahulu.";return;}
+ try { const {error}=await db.from("quiz_results").insert([{student_name:student,theme:selectedTheme,correct,total:questions.length,score:pct,answers}]); if(error) throw error; $("resultMessage").textContent += " Nilaimu berhasil tersimpan online."; }
+ catch(err){ console.error(err); $("resultMessage").textContent += " Perhatian: nilai belum berhasil tersimpan online. Cek koneksi atau konfigurasi Supabase dan beri tahu tutor."; }
+}
+$("quitBtn").onclick=()=>{if(confirm("Keluar dari latihan? Hasil belum akan disimpan."))show("startPanel")};
+$("againBtn").onclick=()=>{$("startBtn").click()};$("homeBtn").onclick=()=>show("startPanel");
+$("dashboardBtn").onclick=()=>dashboard();$("resultDashboardBtn").onclick=()=>dashboard();$("backBtn").onclick=()=>show("startPanel");
+async function dashboard(){
+ show("dashboardPanel");
+ $("tutorLogin").classList.remove("hidden");$("tutorContent").classList.add("hidden");$("loginMessage").textContent="";
+ if(!db){$("loginMessage").textContent="Supabase belum dikonfigurasi. Isi SUPABASE_URL dan SUPABASE_ANON_KEY di kode website setelah membuat project.";return;}
+ const {data:{session}}=await db.auth.getSession();
+ if(session){await loadTutorDashboard();}
+}
+async function loadTutorDashboard(){
+ const {data:{session}}=await db.auth.getSession();
+ if(!session){$("tutorLogin").classList.remove("hidden");$("tutorContent").classList.add("hidden");return;}
+ $("tutorLogin").classList.add("hidden");$("tutorContent").classList.remove("hidden");
+ $("historyBody").innerHTML='<tr><td colspan="6">Memuat hasil…</td></tr>';
+ const {data,error}=await db.from("quiz_results").select("id,created_at,student_name,theme,correct,total,score").order("created_at",{ascending:false}).limit(1000);
+ if(error){$("historyBody").innerHTML='<tr><td colspan="6">Gagal memuat data. Periksa policy RLS Supabase.</td></tr>';console.error(error);return;}
+ window.remoteResults=data||[];let h=window.remoteResults;
+ $("dashboardStats").innerHTML=`<div class="stat"><span class="small">Percobaan</span><strong>${h.length}</strong></div><div class="stat"><span class="small">Peserta unik (berdasarkan nama)</span><strong>${new Set(h.map(x=>x.student_name.toLowerCase())).size}</strong></div><div class="stat"><span class="small">Rata-rata nilai</span><strong>${h.length?Math.round(h.reduce((s,x)=>s+x.score,0)/h.length):0}%</strong></div>`;
+ $("historyBody").innerHTML="";h.forEach(r=>{let tr=document.createElement("tr");[new Date(r.created_at).toLocaleString("id-ID"),r.student_name,r.theme,r.correct,r.total,r.score+"%"].forEach(v=>{let td=document.createElement("td");td.textContent=v;tr.append(td)});$("historyBody").append(tr)});
+ if(!h.length)$("historyBody").innerHTML='<tr><td colspan="6">Belum ada hasil latihan.</td></tr>';
+}
+$("loginBtn").onclick=async()=>{
+ if(!db){$("loginMessage").textContent="Supabase belum dikonfigurasi.";return;}
+ const email=$("tutorEmail").value.trim(),password=$("tutorPassword").value;
+ if(!email||!password){$("loginMessage").textContent="Isi email dan password tutor.";return;}
+ $("loginMessage").textContent="Sedang login…";
+ const {error}=await db.auth.signInWithPassword({email,password});
+ if(error){$("loginMessage").textContent="Login gagal. Periksa email/password dan konfigurasi Auth.";console.error(error);return;}
+ await loadTutorDashboard();
+};
+$("loginBackBtn").onclick=()=>show("startPanel");
+$("logoutBtn").onclick=async()=>{if(db)await db.auth.signOut();dashboard()};
+$("backBtn").onclick=()=>show("startPanel");
+$("exportBtn").onclick=()=>{let h=window.remoteResults||[];if(!h.length){alert("Belum ada riwayat untuk diekspor.");return}let rows=[["Tanggal","Nama","Tema","Benar","Total","Nilai persen"],...h.map(r=>[new Date(r.created_at).toLocaleString("id-ID"),r.student_name,r.theme,r.correct,r.total,r.score])];let csv=rows.map(row=>row.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\r\n");let blob=new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8;"});let a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="hasil-deutsch-lernreise.csv";a.click();URL.revokeObjectURL(a.href)};
+
+</script>
+</body>
+</html>
